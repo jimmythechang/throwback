@@ -8,11 +8,3 @@ public class SearchResponse {
         return response.docs;
     }
 }
-
-
-
-
-
-
-
-
