@@ -3,18 +3,22 @@ using UnityEngine;
 
 public class ResultsPanelController : MonoBehaviour {
 
-    public GameObject resultsList;
+    // Reference to the layout prefab for a SearchResult.
     public GameObject searchResultPrefab;
 
     /**
-     * Sets Search Results in the specified resultsList GameObject.
+     * Sets Search Results as children of the GameObject to which this script is attached.
      * 
      * <param name="results">An array of SearchResults.</param>
      */
     public void setResults(SearchResult[] results) {
+        foreach(Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+
         foreach (SearchResult result in results) {
             GameObject resultPrefab = createSearchResultPrefab(result);
-            resultPrefab.transform.SetParent(this.transform);
+            resultPrefab.transform.SetParent(transform);
         }
     }
 
@@ -29,6 +33,7 @@ public class ResultsPanelController : MonoBehaviour {
         SearchResultController controller = resultPrefab.GetComponent<SearchResultController>();
 
         controller.title.text = result.title;
+        controller.setIdentifier(result.identifier);
 
         if (result.subject != null && result.subject.Length > 0) {
             controller.subjects.text = generateSubjectString(result);
