@@ -6,6 +6,9 @@ public class ResultsPanelController : MonoBehaviour {
     // Reference to the layout prefab for a SearchResult.
     public GameObject searchResultPrefab;
 
+    // Reference to the panel where song details are displayed.
+    public GameObject songDetailPanelContent;
+
     /**
      * Sets Search Results as children of the GameObject to which this script is attached.
      * 
@@ -34,6 +37,8 @@ public class ResultsPanelController : MonoBehaviour {
 
         controller.title.text = result.title;
         controller.setIdentifier(result.identifier);
+        controller.setSongDetailPanelReference(songDetailPanelContent);
+        controller.setSongDetail(new SongDetail(result.title, result.description, result.date));
 
         if (result.subject != null && result.subject.Length > 0) {
             controller.subjects.text = generateSubjectString(result);

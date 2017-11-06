@@ -9,7 +9,7 @@ public class SearchController : MonoBehaviour {
     // Reference to where the results will be displayed.
     public GameObject resultsPanel;
 
-	void Start () {
+    void Start () {
         inputField = GetComponent<InputField>();
         service = new SearchService();
 	}

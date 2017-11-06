@@ -29,26 +29,6 @@ public class SearchService {
     }
 
     /**
-     * Retrieves details about the supplied song.
-     * 
-     * <param name="identifier">An archive.org identifier.</param>
-     */
-    public IEnumerator getSongDetail(string identifier) {
-        string metadataUrl = identifier + "/" + identifier + "_meta.xml";
-        using (UnityWebRequest request = UnityWebRequest.Get("https://archive.org/download/" + metadataUrl)) {
-            yield return request.Send();
-            if (request.downloadHandler.isDone) {
-                XmlDocument metadata = new XmlDocument();
-                metadata.LoadXml(request.downloadHandler.text);
-
-                SongDetail songDetail = new SongDetail();
-                songDetail.parseSongDetailXml(metadata);
-                Debug.Log(songDetail.description);
-            }
-        }
-    }
-
-    /**
      * Retrieves links to files for the supplied song.
      * 
      * <param name="identifier">An archive.org identifier.</param>
@@ -58,6 +38,7 @@ public class SearchService {
         using (UnityWebRequest request = UnityWebRequest.Get("https://archive.org/download/" + filesUrl)) {
             yield return request.Send();
             if (request.downloadHandler.isDone) {
+                XmlDocument fileData = new XmlDocument();
             }
         }
     }
@@ -77,7 +58,7 @@ public class SearchService {
         builder.Append("?q=(\"" + query + "\")");
         builder.Append(" AND mediaType:(audio) AND format:(\"OGG VORBIS\")");
         //builder.Append(" AND date:[null to \"2000\"]"); // Might need to adjust this depending on how interesting the results are.
-        builder.Append("&fl[]=downloads&fl[]=identifier&fl[]=subject&fl[]=title");
+        builder.Append("&fl[]=downloads&fl[]=identifier&fl[]=subject&fl[]=title&fl[]=description&fl[]=date");
         builder.Append("&sort[]=downloads desc");
         builder.Append("&rows=20&output=json&save=yes");
 

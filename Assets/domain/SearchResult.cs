@@ -6,4 +6,6 @@ public class SearchResult {
     public string identifier;
     public string[] subject;
     public string title;
+    public string description;
+    public string date;
 }
