@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using UnityEngine;
@@ -39,6 +41,15 @@ public class SearchService {
             yield return request.Send();
             if (request.downloadHandler.isDone) {
                 XmlDocument fileData = new XmlDocument();
+                XmlNodeList fileNodes = fileData.SelectNodes("/files/file");
+
+                List<SongFile> songFiles = new List<SongFile>();
+                foreach (XmlNode node in fileNodes) {
+                    if (node.SelectSingleNode("format").InnerText.Equals("Ogg Vorbis")) {
+                        songFiles.Add(new SongFile(node.Attributes["name"].Value, Double.Parse(node.SelectSingleNode("length").InnerText)));
+                    }
+
+                }
             }
         }
     }
