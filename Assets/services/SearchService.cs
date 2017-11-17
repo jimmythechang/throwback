@@ -14,7 +14,7 @@ public class SearchService {
      * Searches for songs at archive.org.
      * 
      * <param name="query">The user's search input.</param>
-     * <param name="resultsPanel">The GameObject in which we'll populate the results.</param>
+     * <param name="resultsPanel">The GameObject in which we populate the results.</param>
      */
     public IEnumerator searchForSongs(string query, GameObject resultsPanel) {
         using (UnityWebRequest request = UnityWebRequest.Get("https://archive.org/advancedsearch.php" + generateQueryString(query))) {
@@ -34,22 +34,26 @@ public class SearchService {
      * Retrieves links to files for the supplied song.
      * 
      * <param name="identifier">An archive.org identifier.</param>
+     * <param name="fileList">The GameObject in which we populate the results.</param>
      */
-    public IEnumerator getSongFiles(string identifier) {
+    public IEnumerator getSongFiles(string identifier, GameObject fileList) {
         string filesUrl = identifier + "/" + identifier + "_files.xml";
+        Debug.Log(filesUrl);
         using (UnityWebRequest request = UnityWebRequest.Get("https://archive.org/download/" + filesUrl)) {
             yield return request.Send();
             if (request.downloadHandler.isDone) {
                 XmlDocument fileData = new XmlDocument();
+                fileData.LoadXml(request.downloadHandler.text);
                 XmlNodeList fileNodes = fileData.SelectNodes("/files/file");
 
                 List<SongFile> songFiles = new List<SongFile>();
                 foreach (XmlNode node in fileNodes) {
                     if (node.SelectSingleNode("format").InnerText.Equals("Ogg Vorbis")) {
-                        songFiles.Add(new SongFile(node.Attributes["name"].Value, Double.Parse(node.SelectSingleNode("length").InnerText)));
+                        songFiles.Add(new SongFile(node.Attributes["name"].Value, float.Parse(node.SelectSingleNode("length").InnerText)));
                     }
-
                 }
+
+                fileList.GetComponent<SongFileListController>().setResults(songFiles);
             }
         }
     }

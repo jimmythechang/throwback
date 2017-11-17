@@ -9,6 +9,9 @@ public class ResultsPanelController : MonoBehaviour {
     // Reference to the panel where song details are displayed.
     public GameObject songDetailPanelContent;
 
+    // Reference to the list where song files are displayed.
+    public GameObject songFileListContent;
+
     /**
      * Sets Search Results as children of the GameObject to which this script is attached.
      * 
@@ -38,6 +41,7 @@ public class ResultsPanelController : MonoBehaviour {
         controller.title.text = result.title;
         controller.setIdentifier(result.identifier);
         controller.setSongDetailPanelReference(songDetailPanelContent);
+        controller.setSongFileListContentReference(songFileListContent);
         controller.setSongDetail(new SongDetail(result.title, result.description, result.date));
 
         if (result.subject != null && result.subject.Length > 0) {
