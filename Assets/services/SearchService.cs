@@ -49,7 +49,7 @@ public class SearchService {
                 List<SongFile> songFiles = new List<SongFile>();
                 foreach (XmlNode node in fileNodes) {
                     if (node.SelectSingleNode("format").InnerText.Equals("Ogg Vorbis")) {
-                        songFiles.Add(new SongFile(node.Attributes["name"].Value, float.Parse(node.SelectSingleNode("length").InnerText)));
+                        songFiles.Add(new SongFile(node.Attributes["name"].Value, float.Parse(node.SelectSingleNode("length").InnerText), identifier));
                     }
                 }
 

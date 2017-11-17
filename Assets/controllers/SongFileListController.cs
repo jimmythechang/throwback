@@ -30,6 +30,7 @@ public class SongFileListController : MonoBehaviour {
         SongFileController controller = filePrefab.GetComponent<SongFileController>();
         controller.filename.text = file.filename;
         controller.playLength.text = generatePlayLengthString(file.playLength);
+        controller.identifier = file.identifier;
 
         return filePrefab;
     }
